@@ -2,10 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>http://localhost:1313/tags/appsec/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>http://localhost:1313/blogs/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/lab/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/lfi/rfi/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/path-traversal/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/port-swigger/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blogs/portswigger-path-traversal/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/security/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2024-06-26T14:30:00+03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
   </url>
 </urlset>

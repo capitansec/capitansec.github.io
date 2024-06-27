@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+<link rel="icon" href=/fav3.png type="image/gif">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      media="print" onload="this.media='all'" />
+<noscript>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+</noscript>
+
+
+<link rel="stylesheet" href="/css/font.css" media="all">
+
+
+
+<meta property="og:title" content="PortSwigger Directory Traversal" />
+<meta property="og:description" content="Path Traversal lab solutions." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blogs/portswigger-path-traversal/" /><meta property="article:section" content="blogs" />
+<meta property="article:published_time" content="2024-06-26T14:30:00+03:00" />
+<meta property="article:modified_time" content="2024-06-26T14:30:00+03:00" /><meta property="og:site_name" content="Burak Bozaci" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="PortSwigger Directory Traversal"/>
+<meta name="twitter:description" content="Path Traversal lab solutions."/>
+
+
+<link rel="stylesheet" href="/bootstrap-5/css/bootstrap.min.css" media="all"><link rel="stylesheet" href="/css/header.css" media="all">
+<link rel="stylesheet" href="/css/footer.css" media="all">
+
+
+<link rel="stylesheet" href="/css/theme.css" media="all">
+
+<style>
+    :root {
+        --text-color: #343a40;
+        --text-secondary-color: #6c757d;
+        --background-color: #eaedf0;
+        --secondary-background-color: #64ffda1a;
+        --primary-color: #007bff;
+        --secondary-color: #f8f9fa;
+
+         
+        --text-color-dark: #e4e6eb;
+        --text-secondary-color-dark: #b0b3b8;
+        --background-color-dark: #18191a;
+        --secondary-background-color-dark: #212529;
+        --primary-color-dark: #ffffff;
+        --secondary-color-dark: #212529;
+    }
+    body {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    html {
+        background-color: var(--background-color) !important;
+    }
+
+    body::-webkit-scrollbar {
+        height: 0px;
+        width: 8px;
+        background-color: var(--background-color);
+    }
+
+    ::-webkit-scrollbar-track {
+        border-radius: 1rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 1rem;
+        background: #b0b0b0;
+        outline: 1px solid var(--background-color);
+    }
+
+    #search-content::-webkit-scrollbar {
+        width: .5em;
+        height: .1em;
+        background-color: var(--background-color);
+    }
+</style>
+
+
+
+<meta name="description" content="Path Traversal lab solutions.">
+<link rel="stylesheet" href="/css/single.css">
+
+
+<script defer src="/fontawesome-6/all-6.4.2.js"></script>
+
+
+  
+  
+
+
+  <title>
+PortSwigger Directory Traversal | Burak Bozaci
+
+  </title>
+</head>
+
+<body class="light">
+  
+  
+<script>
+    let localStorageValue = localStorage.getItem("pref-theme");
+    let mediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    switch (localStorageValue) {
+        case "dark":
+            document.body.classList.add('dark');
+            break;
+        case "light":
+            document.body.classList.remove('dark');
+            break;
+        default:
+            if (mediaQuery) {
+                document.body.classList.add('dark');
+            }
+            break;
+    }
+</script>
+
+
+
+
+<script>
+    var prevScrollPos = window.pageYOffset;
+    window.addEventListener("scroll", function showHeaderOnScroll() {
+        let profileHeaderElem = document.getElementById("profileHeader");
+        let currentScrollPos = window.pageYOffset;
+        let resetHeaderStyle = false;
+        let showNavBarOnScrollUp =  true ;
+        let showNavBar = showNavBarOnScrollUp ? prevScrollPos > currentScrollPos : currentScrollPos > 0;
+        if (showNavBar) {
+            profileHeaderElem.classList.add("showHeaderOnTop");
+        } else {
+            resetHeaderStyle = true;
+        }
+        if(currentScrollPos === 0) {
+            resetHeaderStyle = true;
+        }
+        if(resetHeaderStyle) {
+            profileHeaderElem.classList.remove("showHeaderOnTop");
+        }
+        prevScrollPos = currentScrollPos;
+    });
+</script>
+
+
+
+<header id="profileHeader">
+    <nav class="pt-3 navbar navbar-expand-lg animate">
+        <div class="container-fluid mx-xs-2 mx-sm-5 mx-md-5 mx-lg-5">
+            
+            <a class="navbar-brand primary-font text-wrap" href="/">
+                
+                DevSecOps
+                
+            </a>
+
+            
+                <div>
+                    <input id="search" autocomplete="off" class="form-control mr-sm-2 d-none d-md-block" placeholder='Ctrl &#43; k to Search...'
+                        aria-label="Search" oninput="searchOnChange(event)">
+                </div>
+            
+
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <svg aria-hidden="true" height="24" viewBox="0 0 16 16" version="1.1" width="24" data-view-component="true">
+                    <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"></path>
+                </svg>
+            </button>
+
+            
+            <div class="collapse navbar-collapse text-wrap primary-font" id="navbarContent">
+                <ul class="navbar-nav ms-auto text-center">
+                    
+                        <li class="nav-item navbar-text d-block d-md-none">
+                            <div class="nav-link">
+                                <input id="search" autocomplete="off" class="form-control mr-sm-2" placeholder='Ctrl &#43; k to Search...' aria-label="Search" oninput="searchOnChange(event)">
+                            </div>
+                        </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#about" aria-label="about">
+                            About Me
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#experience"
+                            aria-label="experience">
+                            Experience
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#education"
+                            aria-label="education">
+                            Education
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#projects"
+                            aria-label="projects">
+                            Projects
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#achievements"
+                            aria-label="achievements">
+                            Achievements
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/blogs" title="Blog posts">
+                            
+                            Blog
+                        </a>
+                    </li>
+                    
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        
+                        <div class="text-center">
+                            <button id="theme-toggle">
+                                <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                                <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                    
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>
+<div id="content">
+<section id="single">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-12 col-lg-9">
+        <div class="pr-lg-4">
+          <div class="title mb-5">
+            <h1 class="text-center mb-4">PortSwigger Directory Traversal</h1>
+            <div class="text-center">
+              
+                Capitan
+                <small>|</small>
+              
+              Jun 26, 2024
+
+              
+              <span id="readingTime">
+                min read
+              </span>
+              
+            </div>
+          </div>
+          
+          <div class="featured-image">
+            <img class="img-fluid mx-auto d-block" src="/directory-traversal.svg" alt="PortSwigger Directory Traversal">
+          </div>
+          
+          <article class="page-content  p-2">
+          <p>This vulnerability also known as LFI. It occurs when file read feature has week security check algorithms. I&rsquo;m gonna use BurSuite Community Edition. ⚡</p>
+<h2 id="what-is-path-traversal">What is path traversal?</h2>
+<p>Path traversal is also known as directory traversal. These vulnerabilities enable an attacker to read arbitrary files on the server that is running an application. This might include:</p>
+<ul>
+<li>Application code and data.</li>
+<li>Credentials for back-end systems.</li>
+<li>Sensitive operating system files.</li>
+</ul>
+<p>In some cases, an attacker might be able to write to arbitrary files on the server, allowing them to modify application data or behavior, and ultimately take full control of the server.</p>
+<hr>
+<p><strong>Note</strong>: In fact, not always random files, but some desired files can be read. So, I&rsquo;m gonna try to explain bypass security validations and retrive files by manipulating app. Let&rsquo;s jump in.</p>
+<h2 id="reading-arbitrary-files-via-path-traversal">Reading Arbitrary Files Via Path Traversal</h2>
+<p>In order to read files with a path traversal vulnerability, I first want to talk about where the vulnerability can be detected. This feature should be checked in web applications that already read a file (e.g. a product photo or a pdf visualization tool). Usually we try to call a file in our http request. You can think of it as a photo of a product on a shopping site.</p>
+<p>At this point, if a value for the file is specified in your HTTP request (which can be the name or id value of the file), we can try to call different files by manipulating this value.</p>
+<p>If the website uses client-side rendering, you may be making a direct request to the related content. If the website uses server-side rendering, you may not be able to make this request directly. In this case, you may not find the request you made to the photo in the proxy history. You can capture this request with the help of the inspector tool.</p>
+<h3 id="port-swigger-example">Port Swigger Example</h3>
+<p>Imagine a shopping application that displays images of items for sale. This might load an image using the following HTML:</p>
+<pre tabindex="0"><code>&lt;img src=&#34;/loadImage?filename=218.png&#34;&gt;
+</code></pre><p>The loadImage URL takes a filename parameter and returns the contents of the specified file. The image files are stored on disk in the location /var/www/images/. To return an image, the application appends the requested filename to this base directory and uses a filesystem API to read the contents of the file. In other words, the application reads from the following file path:</p>
+<pre tabindex="0"><code>/var/www/images/218.png
+</code></pre><p>This application implements no defenses against path traversal attacks. As a result, an attacker can request the following URL to retrieve the /etc/passwd file from the server&rsquo;s filesystem:</p>
+<pre tabindex="0"><code>https://insecure-website.com/loadImage?filename=../../../etc/passwd
+</code></pre><p>This causes the application to read from the following file path:</p>
+<pre tabindex="0"><code>/var/www/images/../../../etc/passwd
+</code></pre><p>The sequence ../ is valid within a file path, and means to step up one level in the directory structure. The three consecutive ../ sequences step up from /var/www/images/ to the filesystem root, and so the file that is actually read is:</p>
+<pre tabindex="0"><code>/etc/passwd
+</code></pre><p>On Unix-based operating systems, this is a standard file containing details of the users that are registered on the server, but an attacker could retrieve other arbitrary files using the same technique.</p>
+<p>On Windows, both ../ and ..\ are valid directory traversal sequences. The following is an example of an equivalent attack against a Windows-based server:</p>
+<pre tabindex="0"><code>https://insecure-website.com/loadImage?filename=..\..\..\windows\win.ini
+</code></pre><hr>
+<h2 id="lab-file-path-traversal-simple-case">Lab: File Path Traversal Simple Case</h2>
+<p>This lab is the most primitive version of Path Traversal. Let&rsquo;s see what&rsquo;s going on.</p>
+<p><strong>Goal</strong>: This lab contains a path traversal vulnerability in the display of product images. To solve the lab, retrieve the contents of the <strong>/etc/passwd</strong> file.</p>
+<p><img src="../img.png" alt="img.png"></p>
+<p>I see primitive shopping app which has only product info and photos. After surfing for 2 min, I&rsquo;m inspecting proxy history on burp. Actually I couldn&rsquo;t see any request for specific file. Then I make a desicion to directly get request to address of one of the photos(Right click -&gt; copy image address). After intercepting request I send request by editing filename param.</p>
+<p><img src="../img_1.png" alt="img_1.png"></p>
+<p>As you can see, I just give a couple backpath reff to param&hellip; But As I said it&rsquo;s just simple case. Let&rsquo;s see how to bypass security checks by also coding them 💻</p>
+<hr>
+<h2 id="lab-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass">Lab: File Path Traversal, Traversal Sequences Blocked With Absolute Path Bypass</h2>
+<p>This lab contains a path traversal vulnerability in the display of product images.
+The application blocks traversal sequences but treats the supplied filename as being relative to a default working directory.</p>
+<p>To solve the lab, retrieve the contents of the <code>/etc/passwd</code> file.
+First of all, an example about relative and absolute path:
+<img src="../path.png" alt="img.png"></p>
+<p>In some cases, devoloper might know the attack vector and could be developed a feature to block path operations. Like stripping consecutive dots. Let&rsquo;s code a route including this feature.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> FileResponse
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BASE_DIR <span style="color:#f92672">=</span> Path(<span style="color:#e6db74">&#34;/path/to/your/files&#34;</span>)<span style="color:#f92672">.</span>resolve()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/download&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">download_file</span>(file: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;..&#34;</span> <span style="color:#f92672">in</span> file:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid file path&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    filepath <span style="color:#f92672">=</span> Path(file)<span style="color:#f92672">.</span>resolve()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> str(filepath)<span style="color:#f92672">.</span>startswith(str(BASE_DIR)) <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> filepath<span style="color:#f92672">.</span>is_absolute():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Invalid file path&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> filepath<span style="color:#f92672">.</span>exists():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;File not found&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> FileResponse(filepath, filename<span style="color:#f92672">=</span>filepath<span style="color:#f92672">.</span>name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> uvicorn
+</span></span><span style="display:flex;"><span>    uvicorn<span style="color:#f92672">.</span>run(app, host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.0.0.0&#34;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">8000</span>)
+</span></span></code></pre></div><p>In fact, this is not enough. We will see this in more detail in the next steps. So how do we go to the back directories in this case?</p>
+<p>Actually we don&rsquo;t need to jump to back directories. We can use absolute path to reference the directory path from the root directory. Indeed, /etc/passwd and ../&hellip;/&hellip;/&hellip;/&hellip;/etc/passwd reference the same files. Let&rsquo;s see port swigger lab.</p>
+<p>This lab contains same shopping app so I inspected the request of image url and sent it to repeater.</p>
+<p><img src="../img-relative.png" alt="img.png"></p>
+<p>When I tried to request with random filename param(wich doesn&rsquo;t exist), it returned same response. Of course it&rsquo;s blind shot, you know, we can&rsquo;t know the security algorithm. But we can guess. We gonna talk about other well known missconfigured algorithms. I just tried with full/absolute path of file. And gothca!</p>
+<p><img src="../img-absolute.png" alt="img.png"></p>
+<hr>
+<h2 id="lab-file-path-traversal-traversal-sequences-stripped-non-recursively">Lab: File Path Traversal, Traversal Sequences Stripped Non-Recursively</h2>
+<p>You might have already seen that payload of attack. It&rsquo;s very common. But before the lab we gonna focus code part. I used Python/FastAPI for previous lab. Let&rsquo;s use another in order to be able to analyze lang-dependent.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">express</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;express&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">express</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">BASE_DIR</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;/path/to/your/files&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/download&#39;</span>, (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">query</span>.<span style="color:#a6e22e">file</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">isAbsolute</span>(<span style="color:#a6e22e">file</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">400</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Absolute paths are not allowed&#39;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Replace ../ with null string
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">/\.\.\//g</span>, <span style="color:#e6db74">&#39;&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filePath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">BASE_DIR</span>, <span style="color:#a6e22e">file</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">filePath</span>.<span style="color:#a6e22e">startsWith</span>(<span style="color:#a6e22e">BASE_DIR</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">400</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;Invalid file path&#39;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">existsSync</span>(<span style="color:#a6e22e">filePath</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">status</span>(<span style="color:#ae81ff">404</span>).<span style="color:#a6e22e">send</span>(<span style="color:#e6db74">&#39;File not found&#39;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">sendFile</span>(<span style="color:#a6e22e">filePath</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#ae81ff">3000</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Server is running on port 3000&#39;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>As you can see, developer can clear ../ part of input by regex. Regex is used to edit,remove or validate regular expressions. It uses NFA &amp; DFA structs so it&rsquo;s easier and more reliable way to do this manually. Just simplify the security part. Some how, we need to bypass that feature. We need, in other word inject something. Let&rsquo;s code security part.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_valid_path</span>(file_path):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> file_path<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;/&#34;</span>):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;noway&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#return False # ATM file path doesn&#39;t supposed to start with /.</span>
+</span></span><span style="display:flex;"><span>    cleaned_path <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#39;\.\./&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>, file_path) <span style="color:#75715e"># regex part to remove ../</span>
+</span></span><span style="display:flex;"><span>    print(cleaned_path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>filePath <span style="color:#f92672">=</span> input(<span style="color:#e6db74">&#34;Filepath= &#34;</span>)
+</span></span><span style="display:flex;"><span>is_valid_path(filePath)
+</span></span></code></pre></div><p><img src="../img-func.png" alt="img.png"></p>
+<p>Using double slash or using <strong>&hellip;.//</strong> can be used for escape.</p>
+<pre><code>Input ../../../../etc/passwd
+
+    -&gt; ../../../../[etc/passwd] = etc/passwd
+
+Input ../../../..//etc/passwd
+    -&gt; ../../../../[/etc/passwd] = /etc/passwd
+
+Input ....//....//....//....//etc/passwd
+    -&gt; ..[../]/ ..[../] /..[../] /..[../] /etc/passwd = ../../../../etc/passwd
+</code></pre>
+<p>It must be implemented recursively. After all trimmed input also might be malicious payload. Because this security method is predictable and wellknown. Let&rsquo;s jump the lab.</p>
+<p><strong>Goal:</strong> This lab contains a path traversal vulnerability in the display of product images.
+The application strips path traversal sequences from the user-supplied filename before using it.
+To solve the lab, retrieve the contents of the <code>/etc/passwd</code> file.</p>
+<p>I intercept the request again. I used the payload for filename parameter.</p>
+<p><img src="../img-recursive.png" alt="img.png"></p>
+<hr>
+<h2 id="lab-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode">Lab: File Path Traversal, Traversal Sequences Stripped With Superfluous URL-Decode</h2>
+<p>When filename parameter is a part of url, like GET requests or multipart/form-data, web servers such as nginx may strip directory traversal sequences before proxying request through application.</p>
+<p>This is very important. Because most likely in real world examples, a reverse proxy, api gateway, loadbalancer, etc. will handle your http request up in the front. Such structures are almost mandatory in production environments for better logging, traffic management and multi-tier vlan setup. This means that most of the time we need to url-encode our payloads and in some cases even double encode them.</p>
+<p><img src="../img-encode.png" alt="img.png"></p>
+<p><strong>Goal:</strong> This lab contains a path traversal vulnerability in the display of product images.
+The application blocks input containing path traversal sequences. It then performs a URL-decode of the input before using it.
+To solve the lab, retrieve the contents of the /etc/passwd file.</p>
+<p>As always we have done, I catch the request which related to images. Then I tried url-encode the payload. It&rsquo;s easy to url-encode on burp. Just select your payload and right click on it. You will be able to URL-&gt; encode all etc.
+I tought, I couldn&rsquo;t encode correctly first. But I remember web server might uses double encode and decode. So I used double encode.</p>
+<p><img src="../img-double.png" alt="img.png"></p>
+<hr>
+<h2 id="lab-file-path-traversal-validation-of-start-of-path">Lab: File Path Traversal, Validation Of Start Of Path</h2>
+<p>Sometimes user might be forced to request by basedir of image path. Like <strong>/var/www/images</strong>. And backend may only validate your input when you use basedir. Maybe the filename paramter should definitely start with /var/www/images. All other requests may return 404.
+I used FastAPI and NodeJS. Also go-fiber is good for our context. It&rsquo;s really nice to use go if you are interested in security.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;strings&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/gofiber/fiber/v2&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">app</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fiber</span>.<span style="color:#a6e22e">New</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Use</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">fiber</span>.<span style="color:#a6e22e">Ctx</span>) <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">filename</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;filename&#34;</span>) 
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">baseDir</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;/var/www/images&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">filename</span>, <span style="color:#a6e22e">baseDir</span>) {
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fiber</span>.<span style="color:#a6e22e">NewError</span>(<span style="color:#a6e22e">fiber</span>.<span style="color:#a6e22e">StatusForbidden</span>, <span style="color:#e6db74">&#34;Invalid filename&#34;</span>)
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SendFile</span>(<span style="color:#a6e22e">filename</span>)
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Listen</span>(<span style="color:#e6db74">&#34;:3000&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Actually, I wanted to use fiber v4. But it has been a while to code by golang. Well, I guess I&rsquo;m a little rusty.</p>
+<p><img src="../img-basedir.png" alt="img.png"></p>
+<p>We can bypass the basedir check by adding path traversal payload at the end of payload. At this point we need to think about &ldquo;if developer may check start of input path, also can validate file extension. Maybe developer check filename.[PNG]&rdquo;
+We gonna discuss about that on next labs.</p>
+<hr>
+<h2 id="lab-file-path-traversal-validation-of-file-extension-with-null-byte-bypass">Lab: File Path Traversal, Validation Of File Extension With Null Byte Bypass</h2>
+<p><strong>Goal:</strong> This lab contains a path traversal vulnerability in the display of product images. The application validates that the supplied filename ends with the expected file extension. To solve the lab, retrieve the contents of the /etc/passwd file.</p>
+<p>I actually made a point of this in the last lab thread. Application could force us to request file by specific file extension. When we try to retrieve.
+Think about that, you are trying to fetch files but app enforces to you by specific extension. You can&rsquo;t fetch like /etc/passwd.png right.
+We need to bypass that. If you are familiar with sql injection we mostly use comment to overcome rest of the query. For path traversal we can use null byte %00.
+Let&rsquo;s jump in.</p>
+<p>Like other labs we see a shopping application. I&rsquo;m fetching product image request. Also I realised, system use server side rendering so I can&rsquo;t find the request on proxy history. I had to intercept is manually.</p>
+<p><img src="../img-null.png" alt="img.png"></p>
+<hr>
+<h2 id="how-to-prevent-path-traversal-attacks">How To Prevent Path Traversal Attacks</h2>
+<p>The most effective way to prevent path traversal vulnerabilities is to avoid passing user-supplied input to filesystem APIs altogether.
+If you can&rsquo;t avoid passing user-supplied input to filesystem APIs, we recommend using two layers of defense to prevent attacks:</p>
+<ul>
+<li>Validate the user input before processing it. Ideally, compare the user input with a whitelist of permitted values. If that isn&rsquo;t possible, verify that the input contains only permitted content, such as alphanumeric characters only.</li>
+<li>After validating the supplied input, append the input to the base directory and use a platform filesystem API to canonicalize the path. Verify that the canonicalized path starts with the expected base directory.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">File</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">File</span>(<span style="color:#a6e22e">BASE_DIRECTORY</span>, <span style="color:#a6e22e">userInput</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">getCanonicalPath</span>().<span style="color:#a6e22e">startsWith</span>(<span style="color:#a6e22e">BASE_DIRECTORY</span>)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// process file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>The main point was file reading ops. But also we need to be carefull about i/o operations on disk. When we save a file or reading a file, if get a param which related to the file we need robust validations. We need to rename file and while reading ops, we have to validate request parameters. I&rsquo;m gona code a secure file read and file write endpoint by fastapi.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException, Path
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path <span style="color:#66d9ef">as</span> FilePath
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/read-file/{file_path:path}&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_file</span>(file_path: str <span style="color:#f92672">=</span> Path(<span style="color:#f92672">...</span>, regex<span style="color:#f92672">=</span><span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;^[a-zA-Z0-9_/\.]+$&#34;</span>)):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check if the file path is within allowed directory or handle as needed</span>
+</span></span><span style="display:flex;"><span>    base_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/path/to/allowed_directory/&#39;</span>  <span style="color:#75715e"># Replace with your allowed directory</span>
+</span></span><span style="display:flex;"><span>    full_path <span style="color:#f92672">=</span> base_path <span style="color:#f92672">+</span> file_path
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Validate if the file exists and is a file (not directory)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> FilePath(full_path)<span style="color:#f92672">.</span>is_file():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;File not found&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Read and return the file content</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(full_path, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf-8&#39;</span>) <span style="color:#66d9ef">as</span> file:
+</span></span><span style="display:flex;"><span>        file_content <span style="color:#f92672">=</span> file<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;file_content&#34;</span>: file_content}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/save-file/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_file</span>(file: UploadFile <span style="color:#f92672">=</span> File(<span style="color:#f92672">...</span>)):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Generate a unique filename to prevent overwriting existing files</span>
+</span></span><span style="display:flex;"><span>    file_extension <span style="color:#f92672">=</span> Path(file<span style="color:#f92672">.</span>filename)<span style="color:#f92672">.</span>suffix
+</span></span><span style="display:flex;"><span>    unique_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>uuid4()<span style="color:#f92672">.</span>hex<span style="color:#e6db74">}{</span>file_extension<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define your upload directory</span>
+</span></span><span style="display:flex;"><span>    upload_directory <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/path/to/upload_directory/&#39;</span>  <span style="color:#75715e"># Replace with your upload directory</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Save the file</span>
+</span></span><span style="display:flex;"><span>    file_path <span style="color:#f92672">=</span> upload_directory <span style="color:#f92672">+</span> unique_filename
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(file_path, <span style="color:#e6db74">&#34;wb&#34;</span>) <span style="color:#66d9ef">as</span> file_object:
+</span></span><span style="display:flex;"><span>        file_object<span style="color:#f92672">.</span>write(file<span style="color:#f92672">.</span>file<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;file_path&#34;</span>: file_path}
+</span></span></code></pre></div><hr>
+<h2 id="end-notes">End Notes</h2>
+<p>I tried to add more info and code examples. Also I used community edition. Feel free to contact by any source for any question and recommend.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/file-path-traversal">https://portswigger.net/web-security/file-path-traversal</a></li>
+</ul>
+
+          </article>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-3">
+        <div id="stickySideBar" class="sticky-sidebar">
+          
+          <aside class="toc">
+              <h5>
+                Table Of Contents
+              </h5>
+              <div class="toc-content">
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-path-traversal">What is path traversal?</a></li>
+    <li><a href="#reading-arbitrary-files-via-path-traversal">Reading Arbitrary Files Via Path Traversal</a>
+      <ul>
+        <li><a href="#port-swigger-example">Port Swigger Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#lab-file-path-traversal-simple-case">Lab: File Path Traversal Simple Case</a></li>
+    <li><a href="#lab-file-path-traversal-traversal-sequences-blocked-with-absolute-path-bypass">Lab: File Path Traversal, Traversal Sequences Blocked With Absolute Path Bypass</a></li>
+    <li><a href="#lab-file-path-traversal-traversal-sequences-stripped-non-recursively">Lab: File Path Traversal, Traversal Sequences Stripped Non-Recursively</a></li>
+    <li><a href="#lab-file-path-traversal-traversal-sequences-stripped-with-superfluous-url-decode">Lab: File Path Traversal, Traversal Sequences Stripped With Superfluous URL-Decode</a></li>
+    <li><a href="#lab-file-path-traversal-validation-of-start-of-path">Lab: File Path Traversal, Validation Of Start Of Path</a></li>
+    <li><a href="#lab-file-path-traversal-validation-of-file-extension-with-null-byte-bypass">Lab: File Path Traversal, Validation Of File Extension With Null Byte Bypass</a></li>
+    <li><a href="#how-to-prevent-path-traversal-attacks">How To Prevent Path Traversal Attacks</a></li>
+    <li><a href="#end-notes">End Notes</a>
+      <ul>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+          </aside>
+          
+
+          
+          <aside class="tags">
+            <h5>Tags</h5>
+            <ul class="tags-ul list-unstyled list-inline">
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/security"
+                target="_blank"
+              >Security</a></li>
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/appsec"
+                target="_blank"
+              >AppSec</a></li>
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/lab"
+                target="_blank"
+              >Lab</a></li>
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/port-swigger"
+                target="_blank"
+              >Port Swigger</a></li>
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/path-traversal"
+                target="_blank"
+              >Path Traversal</a></li>
+              
+              <li class="list-inline-item"><a href="http://localhost:1313/tags/lfi/rfi"
+                target="_blank"
+              >LFI/RFI</a></li>
+              
+            </ul>
+          </aside>
+          
+
+          
+          <aside class="social">
+            <h5>Social</h5>
+            <div class="social-content">
+              <ul class="list-inline">
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http%3a%2f%2flocalhost%3a1313%2fblogs%2fportswigger-path-traversal%2f">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://twitter.com/share?text=PortSwigger%20Directory%20Traversal&url=http%3a%2f%2flocalhost%3a1313%2fblogs%2fportswigger-path-traversal%2f">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://api.whatsapp.com/send?text=PortSwigger%20Directory%20Traversal: http%3a%2f%2flocalhost%3a1313%2fblogs%2fportswigger-path-traversal%2f">
+                    <i class="fab fa-whatsapp"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href='mailto:?subject=PortSwigger%20Directory%20Traversal&amp;body=Check%20out%20this%20site http%3a%2f%2flocalhost%3a1313%2fblogs%2fportswigger-path-traversal%2f'>
+                    <i class="fa fa-envelope"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 p-4">
+        
+      </div>
+    </div>
+  </div>
+  <button class="p-2 px-3" onclick="topFunction()" id="topScroll">
+    <i class="fas fa-angle-up"></i>
+  </button>
+</section>
+
+
+<div class="progress">
+  <div id="scroll-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<Script src="/js/scrollProgressBar.js"></script>
+
+
+<script>
+  var topScroll = document.getElementById("topScroll");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topScroll.style.display = "block";
+    } else {
+      topScroll.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  
+  let stickySideBarElem = document.getElementById("stickySideBar");
+  let stickyNavBar =  true ;
+  if(stickyNavBar) {
+    let headerElem = document.getElementById("profileHeader");
+    let headerHeight = headerElem.offsetHeight + 15;
+    stickySideBarElem.style.top = headerHeight + "px";
+  } else {
+    stickySideBarElem.style.top = "50px";
+  }
+</script>
+
+
+<script src="/js/readingTime.js"></script>
+
+
+
+  </div><footer>
+    
+ 
+ 
+<div class="container py-3" id="recent-posts">
+    
+    
+    <div class="h3 text-center text-secondary py-3">
+        Recent Posts
+    </div>
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-4 col-md-6 pt-2">
+            <div class="card h-100">
+                
+                <div class="card-header">
+                    <a href="/blogs/portswigger-path-traversal/">
+                        <img src="/directory-traversal.svg" class="card-img-top" alt="PortSwigger Directory Traversal">
+                    </a>
+                </div>
+                
+                <div class="card-body bg-transparent p-3 shadow-sm">
+                    <a href="/blogs/portswigger-path-traversal/" class="primary-font card-title">
+                        <h5 class="card-title bg-transparent" title="PortSwigger Directory Traversal">PortSwigger Directory …</h5>
+                    </a>
+                    <div class="card-text secondary-font">
+                        <p>This vulnerability also known as LFI. It occurs when file read feature has week security check algorithms. I&rsquo;m gonna use BurSuite Community Edition. :zap:
+What is path traversal? Path traversal is also known as directory traversal. These vulnerabilities enable an attacker to read arbitrary …</p>
+                    </div>
+                </div>
+                <div class="mt-auto card-footer">
+                    <span class="float-start">Jun 26, 2024</span>
+                    <a href="/blogs/portswigger-path-traversal/" class="float-end btn btn-outline-info btn-sm">Read</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="text-center pt-2">
+    
+
+    
+
+    
+
+    
+
+    
+</div><div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            
+                <div class="pb-2">
+                    <a href="http://localhost:1313/" title="Burak Bozaci">
+                        <img alt="Footer logo" src="/fav3.png"
+                            height="40px" width="40px">
+                    </a>
+                </div>
+            
+            &copy; 2024  All rights reserved
+            <div class="text-secondary">
+                Made with
+                <span class="text-danger">
+                    &#10084;
+                </span>
+                and
+                <a href="https://github.com/gurusabarish/hugo-profile" target="_blank"
+                    title="Designed and developed by gurusabarish">
+                    Hugo Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</footer><script src="/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+</script>
+
+
+    <script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  <section id="search-content" class="py-2">
+    <div class="container" id="search-results"></div>
+  </section>
+</body>
+
+</html>

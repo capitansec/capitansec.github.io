@@ -6,6 +6,49 @@
     <description>Recent content in Tags on Burak Bozaci</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 26 Jun 2024 14:30:00 +0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AppSec</title>
+      <link>http://localhost:1313/tags/appsec/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/appsec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lab</title>
+      <link>http://localhost:1313/tags/lab/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/lab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LFI/RFI</title>
+      <link>http://localhost:1313/tags/lfi/rfi/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/lfi/rfi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Path Traversal</title>
+      <link>http://localhost:1313/tags/path-traversal/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/path-traversal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Port Swigger</title>
+      <link>http://localhost:1313/tags/port-swigger/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/port-swigger/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>http://localhost:1313/tags/security/</link>
+      <pubDate>Wed, 26 Jun 2024 14:30:00 +0300</pubDate>
+      <guid>http://localhost:1313/tags/security/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
